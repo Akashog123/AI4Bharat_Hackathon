@@ -1,9 +1,10 @@
-# Sahaj — Requirements Document
+# Sahaj (सहज): Voice-First AI Career Counselor - Requirements
 
 > Functional and Non-Functional Requirements
 
-**Version:** 1.0
-**Date:** 2026-02-01
+**Version:** 1.0  
+**Date:** 2026-02-01  
+**Track:** AI for Communities, Access & Public Impact
 
 ---
 
@@ -13,7 +14,57 @@
 
 Sahaj enables any Indian youth to access career guidance, skill training, and job opportunities through voice conversations in their native language — without needing a smartphone app, internet literacy, or a resume.
 
-### 1.2 Target Users
+**One-liner:**
+> *"India's first voice-first career counselor — helping 300M youth discover skills, learn for free, and find jobs, in all 22 Indian languages, without downloading an app."*
+
+### 1.2 Problem Statement
+
+#### The Youth Employment Crisis
+
+| Statistic | Value | Source |
+|-----------|-------|--------|
+| Population under 35 | 65% | Census |
+| Youth unemployment (15-24) | 31% | ILO 2024 |
+| Workforce in informal sector | 83% | NSSO |
+| Formally skill-trained | 2.3% | Skill India |
+| Rural youth in unskilled migration | 70% | NSDC |
+
+#### Why Current Solutions Fail
+
+| Solution | Failure Mode |
+|----------|--------------|
+| **Job portals (Naukri, Indeed)** | English-first, resume-heavy, urban jobs only |
+| **Skill India portal** | Complex navigation, no personalization |
+| **NSDC courses** | Discovery broken — youth don't know what exists |
+| **Career counselors** | 1 counselor per 10,000+ students in rural areas |
+| **Recruiters** | Only reach tier-1 cities |
+
+#### Core Insight
+
+> Rural and semi-urban youth don't lack ambition, they lack **discovery** and **navigation**. They don't know what skills are valuable, what training exists, or how to access opportunities.
+
+### 1.3 Solution Vision
+
+A WhatsApp/IVR-based voice AI that acts as a personal career counselor for anyone seeking employment — from rural daily-wage workers to urban job seekers.
+
+#### The Four Phases
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        SAHAJ                                    │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐  │
+│  │ DISCOVER │───▶│  LEARN   │───▶│ PREPARE  │───▶│ CONNECT  │  │
+│  └──────────┘    └──────────┘    └──────────┘    └──────────┘  │
+│                                                                 │
+│  "What can      "Here's a       "Let's          "Here are 5   │
+│   I do?"         free course"    practice"       jobs for you" │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### 1.4 Target Users
 
 | User Segment | Demographics | Characteristics |
 |--------------|--------------|-----------------|
@@ -22,9 +73,9 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | **Tertiary** | Urban job seekers | Graduate, comfortable with English, needs interview prep |
 | **Edge Case** | Feature phone users | No smartphone, uses IVR fallback |
 
-### 1.3 User Stories
+## 2. User Stories
 
-#### Epic 1: Skill Discovery
+### 2.1 Epic 1: Skill Discovery
 
 | ID | As a... | I want to... | So that... |
 |----|---------|--------------|------------|
@@ -33,7 +84,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | US-1.3 | User | Have the AI recognize informal skills (farming, repair work) | All my abilities are valued |
 | US-1.4 | User | See a summary of my skill profile | I know what the system understood |
 
-#### Epic 2: Course Discovery & Learning
+### 2.2 Epic 2: Course Discovery & Learning
 
 | ID | As a... | I want to... | So that... |
 |----|---------|--------------|------------|
@@ -43,7 +94,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | US-2.4 | User | Get free course options first | Cost is not a barrier |
 | US-2.5 | User | Learn about courses from NSDC, NPTEL, YouTube | I have variety |
 
-#### Epic 3: Interview Preparation
+### 2.3 Epic 3: Interview Preparation
 
 | ID | As a... | I want to... | So that... |
 |----|---------|--------------|------------|
@@ -53,7 +104,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | US-3.4 | User | Get a resume generated from my profile | I have professional documentation |
 | US-3.5 | Urban user | Get resume as PDF on WhatsApp | I can share with employers |
 
-#### Epic 4: Job Matching
+### 2.4 Epic 4: Job Matching
 
 | ID | As a... | I want to... | So that... |
 |----|---------|--------------|------------|
@@ -63,7 +114,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | US-4.4 | User | Hear job details (salary, requirements) | I can evaluate fit |
 | US-4.5 | User | Get contact info or application link | I can apply directly |
 
-#### Epic 5: Multilingual Voice Interface
+### 2.5 Epic 5: Multilingual Voice Interface
 
 | ID | As a... | I want to... | So that... |
 |----|---------|--------------|------------|
@@ -72,11 +123,9 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | US-5.3 | User | Switch languages mid-conversation | I can use my most comfortable language |
 | US-5.4 | Feature phone user | Call a number and interact via voice | I don't need a smartphone |
 
----
+## 3. Functional Requirements
 
-## 2. Functional Requirements
-
-### 2.1 Voice Input/Output
+### 3.1 Voice Input/Output
 
 | ID | Requirement | Priority |
 |----|-------------|----------|
@@ -89,7 +138,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | FR-V7 | System SHALL support IVR fallback via Twilio | P1 |
 | FR-V8 | System SHALL handle code-mixed speech (Hinglish, etc.) | P1 |
 
-### 2.2 Conversation Management
+### 3.2 Conversation Management
 
 | ID | Requirement | Priority |
 |----|-------------|----------|
@@ -101,7 +150,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | FR-C6 | System SHALL handle conversation timeouts (30 min inactivity) | P1 |
 | FR-C7 | System SHALL support conversation history recall | P2 |
 
-### 2.3 Skill Extraction
+### 3.3 Skill Extraction
 
 | ID | Requirement | Priority |
 |----|-------------|----------|
@@ -113,7 +162,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | FR-S6 | System SHALL allow users to update their profile | P1 |
 | FR-S7 | System SHALL validate extracted information with user | P0 |
 
-### 2.4 Course Recommendation
+### 3.4 Course Recommendation
 
 | ID | Requirement | Priority |
 |----|-------------|----------|
@@ -125,7 +174,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | FR-CR6 | System SHALL filter courses by language availability | P1 |
 | FR-CR7 | System SHALL track course enrollment (when possible) | P2 |
 
-### 2.5 Interview Preparation
+### 3.5 Interview Preparation
 
 | ID | Requirement | Priority |
 |----|-------------|----------|
@@ -136,7 +185,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | FR-I5 | System SHALL send resume PDF via WhatsApp | P1 |
 | FR-I6 | System SHALL support interview practice in regional languages | P1 |
 
-### 2.6 Job Matching
+### 3.6 Job Matching
 
 | ID | Requirement | Priority |
 |----|-------------|----------|
@@ -147,11 +196,9 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | FR-J5 | System SHALL provide application links or contact info | P1 |
 | FR-J6 | System SHALL update job listings regularly | P2 |
 
----
+## 4. Non-Functional Requirements
 
-## 3. Non-Functional Requirements
-
-### 3.1 Performance
+### 4.1 Performance
 
 | ID | Requirement | Target |
 |----|-------------|--------|
@@ -162,7 +209,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | NFR-P5 | System availability | 99% uptime |
 | NFR-P6 | Concurrent users supported | 100 (MVP), 10,000 (scale) |
 
-### 3.2 Scalability
+### 4.2 Scalability
 
 | ID | Requirement | Target |
 |----|-------------|--------|
@@ -171,7 +218,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | NFR-S3 | Horizontal scaling for API servers | Supported |
 | NFR-S4 | Database read replicas | Supported |
 
-### 3.3 Reliability
+### 4.3 Reliability
 
 | ID | Requirement | Target |
 |----|-------------|--------|
@@ -181,7 +228,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | NFR-R4 | Recovery time objective (RTO) | < 4 hours |
 | NFR-R5 | Recovery point objective (RPO) | < 1 hour |
 
-### 3.4 Security
+### 4.4 Security
 
 | ID | Requirement | Target |
 |----|-------------|--------|
@@ -192,7 +239,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | NFR-SEC5 | API authentication | API keys + rate limiting |
 | NFR-SEC6 | User data deletion on request | < 24 hours |
 
-### 3.5 Accessibility
+### 4.5 Accessibility
 
 | ID | Requirement | Target |
 |----|-------------|--------|
@@ -202,7 +249,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | NFR-A4 | Feature phone support | IVR fallback |
 | NFR-A5 | No app download required | WhatsApp-only |
 
-### 3.6 Localization
+### 4.6 Localization
 
 | ID | Requirement | Target |
 |----|-------------|--------|
@@ -211,11 +258,9 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | NFR-L3 | Regional dialect handling | Best effort via ASR |
 | NFR-L4 | Culturally appropriate responses | Reviewed prompts |
 
----
+## 5. Technical Requirements
 
-## 4. Technical Requirements
-
-### 4.1 Integration Requirements
+### 5.1 Integration Requirements
 
 | ID | Integration | Purpose | Priority |
 |----|-------------|---------|----------|
@@ -227,7 +272,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | TR-I6 | Supabase | User database | P0 |
 | TR-I7 | ChromaDB/Pinecone | Vector search | P0 |
 
-### 4.2 Data Requirements
+### 5.2 Data Requirements
 
 | ID | Data Source | Content | Update Frequency |
 |----|-------------|---------|------------------|
@@ -237,7 +282,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | TR-D4 | Skill India Portal | Government schemes | Weekly |
 | TR-D5 | Job aggregators | Job listings | Daily (future) |
 
-### 4.3 Infrastructure Requirements
+### 5.3 Infrastructure Requirements
 
 | ID | Component | Specification |
 |----|-----------|---------------|
@@ -248,11 +293,9 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | TR-INF5 | Hosting | Railway/Render (MVP) → AWS/GCP |
 | TR-INF6 | CDN | Cloudflare (for static assets) |
 
----
+## 6. Constraints
 
-## 5. Constraints
-
-### 5.1 Technical Constraints
+### 6.1 Technical Constraints
 
 | Constraint | Impact | Mitigation |
 |------------|--------|------------|
@@ -261,7 +304,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | LLM token costs | High at scale | Caching, prompt optimization |
 | Voice note size limit | 16MB on WhatsApp | Not an issue for short voice |
 
-### 5.2 Business Constraints
+### 6.2 Business Constraints
 
 | Constraint | Impact | Mitigation |
 |------------|--------|------------|
@@ -269,7 +312,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | No direct job API access | Limited job listings | Start with curated static data |
 | User trust | May not trust unknown number | Partner with govt/NGO for credibility |
 
-### 5.3 Hackathon Constraints
+### 6.3 Hackathon Constraints
 
 | Constraint | Impact | Mitigation |
 |------------|--------|------------|
@@ -277,11 +320,9 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | Team size | Limited parallelization | Clear task division |
 | API key limits | May hit free tier limits | Prepare backup keys |
 
----
+## 7. Acceptance Criteria
 
-## 6. Acceptance Criteria
-
-### 6.1 MVP Acceptance Criteria
+### 7.1 MVP Acceptance Criteria
 
 | # | Criterion | Verification |
 |---|-----------|--------------|
@@ -292,7 +333,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | AC-5 | Conversation feels natural, not robotic | User feedback |
 | AC-6 | End-to-end latency < 10 seconds | Measurement |
 
-### 6.2 Demo Acceptance Criteria
+### 7.2 Demo Acceptance Criteria
 
 | # | Criterion | Verification |
 |---|-----------|--------------|
@@ -302,9 +343,7 @@ Sahaj enables any Indian youth to access career guidance, skill training, and jo
 | AC-D4 | Problem statement clearly articulated | Pitch deck |
 | AC-D5 | Impact metrics highlighted | Pitch deck |
 
----
-
-## 7. Out of Scope (MVP)
+## 8. Out of Scope (MVP)
 
 The following are explicitly NOT in scope for the hackathon MVP:
 
@@ -318,11 +357,9 @@ The following are explicitly NOT in scope for the hackathon MVP:
 | Mobile app | Not needed with WhatsApp | Maybe never |
 | Web dashboard for users | Voice-first focus | Phase 2 |
 
----
+## 9. Dependencies
 
-## 8. Dependencies
-
-### 8.1 External Dependencies
+### 9.1 External Dependencies
 
 | Dependency | Risk Level | Contingency |
 |------------|------------|-------------|
@@ -331,7 +368,7 @@ The following are explicitly NOT in scope for the hackathon MVP:
 | OpenAI/Anthropic API | Low | Have both ready, can switch |
 | Supabase availability | Low | Local PostgreSQL backup |
 
-### 8.2 Data Dependencies
+### 9.2 Data Dependencies
 
 | Dependency | Risk Level | Contingency |
 |------------|------------|-------------|
@@ -339,9 +376,34 @@ The following are explicitly NOT in scope for the hackathon MVP:
 | NPTEL course data | Low | Public data, easy to scrape |
 | Job listings | High | Use static sample data for MVP |
 
----
+## 10. Supported Languages (Bhashini)
 
-## 9. Glossary
+| # | Language | Script |
+|---|----------|--------|
+| 1 | Assamese | অসমীয়া |
+| 2 | Bengali | বাংলা |
+| 3 | Bodo | बड़ो |
+| 4 | Dogri | डोगरी |
+| 5 | Gujarati | ગુજરાતી |
+| 6 | Hindi | हिन्दी |
+| 7 | Kannada | ಕನ್ನಡ |
+| 8 | Kashmiri | कॉशुर |
+| 9 | Konkani | कोंकणी |
+| 10 | Maithili | मैथिली |
+| 11 | Malayalam | മലയാളം |
+| 12 | Manipuri | মৈতৈলোন্ |
+| 13 | Marathi | मराठी |
+| 14 | Nepali | नेपाली |
+| 15 | Odia | ଓଡ଼ିଆ |
+| 16 | Punjabi | ਪੰਜਾਬੀ |
+| 17 | Sanskrit | संस्कृतम् |
+| 18 | Santali | ᱥᱟᱱᱛᱟᱲᱤ |
+| 19 | Sindhi | سنڌي |
+| 20 | Tamil | தமிழ் |
+| 21 | Telugu | తెలుగు |
+| 22 | Urdu | اردو |
+
+## 11. Glossary
 
 | Term | Definition |
 |------|------------|
