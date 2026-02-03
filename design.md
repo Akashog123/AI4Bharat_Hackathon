@@ -1,4 +1,4 @@
-# Kaushal Mitra (कौशल मित्र) — Design Document
+# Sahaj (सहज) — Design Document
 
 > Voice-First AI Career Counselor for Bharat
 
@@ -10,7 +10,7 @@
 
 ## 1. Executive Summary
 
-Kaushal Mitra is a voice-first AI career counselor that helps Indian youth discover their skills, find relevant training, practice for interviews, and connect with job opportunities — all through WhatsApp voice notes or IVR calls in any of India's 22 scheduled languages.
+Sahaj is a voice-first AI career counselor that helps Indian youth discover their skills, find relevant training, practice for interviews, and connect with job opportunities — all through WhatsApp voice notes or IVR calls in any of India's 22 scheduled languages.
 
 **One-liner:**
 > *"India's first voice-first career counselor — helping 300M youth discover skills, learn for free, and find jobs, in all 22 Indian languages, without downloading an app."*
@@ -41,13 +41,13 @@ Kaushal Mitra is a voice-first AI career counselor that helps Indian youth disco
 
 ### 2.3 Core Insight
 
-> Rural and semi-urban youth don't lack ambition — they lack **discovery** and **navigation**. They don't know what skills are valuable, what training exists, or how to access opportunities.
+> Rural and semi-urban youth don't lack ambition, they lack **discovery** and **navigation**. They don't know what skills are valuable, what training exists, or how to access opportunities.
 
 ---
 
 ## 3. Solution Overview
 
-### 3.1 What Is Kaushal Mitra?
+### 3.1 What Is Sahaj?
 
 A WhatsApp/IVR-based voice AI that acts as a personal career counselor for anyone seeking employment — from rural daily-wage workers to urban job seekers.
 
@@ -55,7 +55,7 @@ A WhatsApp/IVR-based voice AI that acts as a personal career counselor for anyon
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        KAUSHAL MITRA                            │
+│                        SAHAJ                                    │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐  │
@@ -393,9 +393,9 @@ Strategy: WhatsApp for 80% of users, IVR as fallback for feature phones.
 User: "Namaste, mujhe kaam chahiye"
       (Hello, I need work)
 
-AI:   "Namaste! Main Kaushal Mitra hoon, tumhara career guide.
+AI:   "Namaste! Main Sahaj hoon, tumhara career guide.
        Pehle batao, tumne kitni padhai ki hai?"
-      (Hello! I'm Kaushal Mitra, your career guide.
+      (Hello! I'm Sahaj, your career guide.
        First tell me, how much have you studied?)
 
 User: "12th pass hoon, science se"

@@ -1,4 +1,4 @@
-# Kaushal Mitra — Technical Specification
+# Sahaj — Technical Specification
 
 > Comprehensive Implementation Specification
 
@@ -45,7 +45,7 @@
         │             │             │             │             │
         ▼             ▼             ▼             ▼             ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                           KAUSHAL MITRA SYSTEM                               │
+│                           SAHAJ SYSTEM                                      │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
 │  ┌─────────────────────────────────────────────────────────────────────┐   │
@@ -96,7 +96,7 @@
 ### 2.1 Module Structure
 
 ```
-kaushal-mitra/
+sahaj/
 ├── app/
 │   ├── __init__.py
 │   ├── main.py                 # FastAPI application entry
@@ -540,7 +540,7 @@ class JobListing(Base):
 from langchain.agents import AgentExecutor
 from langchain.tools import Tool
 
-class KaushalMitraOrchestrator:
+class SahajOrchestrator:
     """Main orchestrator that routes to specialized agents."""
 
     def __init__(self):
@@ -678,7 +678,7 @@ class CourseRecommendationAgent:
 
 ```python
 SKILL_DISCOVERY_SYSTEM_PROMPT = """
-You are Kaushal Mitra (कौशल मित्र), a friendly career counselor for Indian youth.
+You are Sahaj (सहज), a friendly career counselor for Indian youth.
 
 Your personality:
 - Warm and encouraging, like an older sibling
@@ -711,7 +711,7 @@ Previous messages:
 
 ```python
 COURSE_RECOMMENDATION_PROMPT = """
-You are Kaushal Mitra, helping the user find the right training courses.
+You are Sahaj, helping the user find the right training courses.
 
 User profile:
 {user_profile}
@@ -1317,11 +1317,11 @@ CREATE INDEX idx_analytics_created ON analytics_events(created_at);
 ### 11.1 Error Types
 
 ```python
-class KaushalMitraError(Exception):
-    """Base exception for Kaushal Mitra."""
+class SahajError(Exception):
+    """Base exception for Sahaj."""
     pass
 
-class VoiceProcessingError(KaushalMitraError):
+class VoiceProcessingError(SahajError):
     """Error in voice processing pipeline."""
     pass
 
@@ -1333,15 +1333,15 @@ class TTSError(VoiceProcessingError):
     """Error in text-to-speech conversion."""
     pass
 
-class LLMError(KaushalMitraError):
+class LLMError(SahajError):
     """Error from LLM provider."""
     pass
 
-class DatabaseError(KaushalMitraError):
+class DatabaseError(SahajError):
     """Database operation error."""
     pass
 
-class WhatsAppError(KaushalMitraError):
+class WhatsAppError(SahajError):
     """WhatsApp API error."""
     pass
 ```
@@ -1468,14 +1468,14 @@ class TestVoicePipeline:
 # tests/e2e/test_conversation_flow.py
 
 import pytest
-from app.core.orchestrator import KaushalMitraOrchestrator
+from app.core.orchestrator import SahajOrchestrator
 
 class TestConversationFlow:
 
     async def test_complete_discovery_flow(self):
         """Test complete skill discovery conversation."""
 
-        orchestrator = KaushalMitraOrchestrator()
+        orchestrator = SahajOrchestrator()
         user_id = "test_user_123"
 
         # Simulate conversation
@@ -1513,7 +1513,7 @@ APP_DEBUG=true
 APP_SECRET_KEY=your-secret-key-here
 
 # Database
-DATABASE_URL=postgresql://user:pass@localhost:5432/kaushal_mitra
+DATABASE_URL=postgresql://user:pass@localhost:5432/sahaj
 REDIS_URL=redis://localhost:6379
 
 # Bhashini
@@ -1572,7 +1572,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/kaushal_mitra
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/sahaj
       - REDIS_URL=redis://redis:6379
     depends_on:
       - db
@@ -1585,7 +1585,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: kaushal_mitra
+      POSTGRES_DB: sahaj
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -1660,7 +1660,7 @@ class JSONFormatter(logging.Formatter):
 def setup_logging():
     """Configure application logging."""
 
-    logger = logging.getLogger("kaushal_mitra")
+    logger = logging.getLogger("sahaj")
     logger.setLevel(logging.INFO)
 
     handler = logging.StreamHandler()

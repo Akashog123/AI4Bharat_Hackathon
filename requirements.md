@@ -1,4 +1,4 @@
-# Kaushal Mitra — Requirements Document
+# Sahaj — Requirements Document
 
 > Functional and Non-Functional Requirements
 
@@ -11,7 +11,7 @@
 
 ### 1.1 Vision Statement
 
-Kaushal Mitra enables any Indian youth to access career guidance, skill training, and job opportunities through voice conversations in their native language — without needing a smartphone app, internet literacy, or a resume.
+Sahaj enables any Indian youth to access career guidance, skill training, and job opportunities through voice conversations in their native language — without needing a smartphone app, internet literacy, or a resume.
 
 ### 1.2 Target Users
 
