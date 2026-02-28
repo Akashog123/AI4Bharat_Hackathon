@@ -35,9 +35,9 @@ class SessionService:
         if state:
             session.current_state = state
         if messages is not None:
-            session.messages = messages
+            session.messages = list(messages) if messages else None
         if context is not None:
-            session.context = context
+            session.context = dict(context) if context else None
         session.last_active_at = datetime.utcnow()
         await self.db.commit()
         await self.db.refresh(session)
@@ -47,9 +47,9 @@ class SessionService:
         session = await self.get_session(session_id)
         if not session:
             raise ValueError(f"Session {session_id} not found")
-        messages = session.messages or []
+        messages = list(session.messages or [])
         messages.append({"role": role, "content": content, "timestamp": datetime.utcnow().isoformat()})
-        session.messages = messages
+        session.messages = list(messages) if messages else None
         session.last_active_at = datetime.utcnow()
         await self.db.commit()
         await self.db.refresh(session)
