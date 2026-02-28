@@ -10,7 +10,7 @@
 
 ## 1. System Architecture Overview
 
-Sahaj is built as a cloud-native system using FastAPI that integrates with WhatsApp Business API and Bhashini to provide voice-first career counseling in multiple Indian languages.
+Sahaj is built as a cloud-native system using FastAPI that integrates with WhatsApp Business API and Sarvam AI to provide voice-first career counseling in multiple Indian languages.
 
 ### 1.1 High-Level Architecture
 
@@ -20,7 +20,7 @@ Sahaj is built as a cloud-native system using FastAPI that integrates with Whats
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐     │
-│  │ WhatsApp │  │ Bhashini │  │  OpenAI  │  │  Twilio  │  │ Supabase │     │
+│  │ WhatsApp │  │ Sarvam AI │  │  OpenAI  │  │  Twilio  │  │ Supabase │     │
 │  │ Business │  │   APIs   │  │   API    │  │   Voice  │  │    DB    │     │
 │  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘     │
 │       │             │             │             │             │            │
@@ -66,8 +66,8 @@ Sahaj is built as a cloud-native system using FastAPI that integrates with Whats
 | **Database** | PostgreSQL | 15+ | User data, sessions |
 | **ORM** | SQLAlchemy | 2.0+ | Database operations |
 | **Cache** | Redis | 7+ | Session state, rate limiting |
-| **Voice ASR** | Bhashini | - | Speech-to-text |
-| **Voice TTS** | Bhashini | - | Text-to-speech |
+| **Voice ASR** | Sarvam AI (Saaras v3) | - | Speech-to-text |
+| **Voice TTS** | Sarvam AI (Bulbul v3) | - | Text-to-speech |
 | **Messaging** | WhatsApp Business API | Cloud | Primary channel |
 | **Voice Fallback** | Twilio | - | IVR support |
 | **Hosting** | Railway / Render | - | Application hosting |
@@ -102,9 +102,9 @@ sahaj/
 │   │
 │   ├── voice/
 │   │   ├── __init__.py
-│   │   ├── bhashini.py         # Bhashini ASR/TTS client
-│   │   ├── pipeline.py         # Voice processing pipeline
-│   │   └── audio_utils.py      # Audio format conversion
+│   │   ├── sarvam.py          # Sarvam AI ASR/TTS client
+│   │   ├── pipeline.py        # Voice processing pipeline
+│   │   └── audio_utils.py     # Audio format conversion
 │   │
 │   ├── messaging/
 │   │   ├── __init__.py
@@ -170,7 +170,7 @@ sahaj/
    │              │                │ Download Audio │                │
    │              │                │───────────────▶│                │
    │              │                │                │                │
-   │              │                │                │ Bhashini ASR   │
+   │              │                │                │ Sarvam ASR     │
    │              │                │                │───────────────▶│
    │              │                │                │                │
    │              │                │                │◀───────────────│
@@ -188,7 +188,7 @@ sahaj/
    │              │                │                │                │
    │              │                │ Generate Audio │                │
    │              │                │───────────────▶│                │
-   │              │                │                │ Bhashini TTS   │
+   │              │                │                │ Sarvam TTS     │
    │              │                │                │───────────────▶│
    │              │                │◀───────────────│                │
    │              │                │ Audio File     │                │
@@ -223,57 +223,58 @@ GET /health - Health check endpoint
 
 ### 4.2 Voice Processing Service
 
-**Purpose**: Convert speech to text and text to speech using Bhashini  
-**Technology**: Python with Bhashini APIs
+**Purpose**: Convert speech to text and text to speech using Sarvam AI
+**Technology**: Python with Sarvam AI APIs (via `sarvamai` SDK)
 
 **Key Components**:
-- **Speech-to-Text Engine**: Converts voice messages to text via Bhashini ASR
-- **Text-to-Speech Engine**: Generates natural voice responses via Bhashini TTS
+- **Speech-to-Text Engine**: Converts voice messages to text via Sarvam AI Saaras v3
+- **Text-to-Speech Engine**: Generates natural voice responses via Sarvam AI Bulbul v3
 - **Audio Processor**: Handles audio format conversion (OGG to WAV, WAV to MP3)
-- **Language Detector**: Identifies spoken language automatically
+- **Language Detector**: Identifies spoken language automatically (built into Saaras v3)
 
 **Processing Pipeline**:
 1. Receive voice message from WhatsApp (OGG format)
 2. Convert OGG to WAV (16kHz, mono)
-3. Detect language if not known
-4. Convert to text using Bhashini ASR
+3. Detect language if not known (Saaras auto-detects 23 languages)
+4. Convert to text using Sarvam AI Saaras v3 ASR
 5. Return transcribed text with confidence score
 
-**Bhashini Integration**:
+**Sarvam AI Integration**:
 ```python
-# ASR API Call
-POST https://dhruva-api.bhashini.gov.in/services/inference/pipeline
-{
-  "pipelineTasks": [{
-    "taskType": "asr",
-    "config": {
-      "language": {"sourceLanguage": "hi"},
-      "serviceId": "<ASR_SERVICE_ID>",
-      "audioFormat": "wav",
-      "samplingRate": 16000
-    }
-  }],
-  "inputData": {
-    "audio": [{"audioContent": "<BASE64_AUDIO>"}]
-  }
-}
+from sarvamai import SarvamAI
 
-# TTS API Call
-POST https://dhruva-api.bhashini.gov.in/services/inference/pipeline
-{
-  "pipelineTasks": [{
-    "taskType": "tts",
-    "config": {
-      "language": {"sourceLanguage": "hi"},
-      "serviceId": "<TTS_SERVICE_ID>",
-      "gender": "female"
-    }
-  }],
-  "inputData": {
-    "input": [{"source": "नमस्ते! मैं सहज हूं।"}]
-  }
-}
+# Initialize client
+client = SarvamAI(api_subscription_key="YOUR_SARVAM_API_KEY")
+
+# Speech-to-Text (ASR) - Saaras v3
+response = client.speech_to_text.transcribe(
+    file=open("audio.wav", "rb"),
+    model="saaras:v3",
+    mode="transcribe"  # or "translate", "verbatim", "translit", "codemix"
+)
+print(response.text)  # Transcribed text
+
+# Text-to-Speech (TTS) - Bulbul v3
+audio_response = client.text_to_speech.convert(
+    target_language_code="hi-IN",  # Hindi
+    text="नमस्ते! मैं सहज हूं, आपका करियर गाइड।",
+    model="bulbul:v3",
+    speaker="anushka"  # Multiple voices available
+)
+# audio_response.audios[0] contains base64-encoded audio
 ```
+
+**Supported Languages** (Sarvam AI):
+- **ASR (Saaras v3)**: 23 languages (22 Indian + English)
+- **TTS (Bulbul v3)**: 11 languages (Hindi, Bengali, Tamil, Telugu, Kannada, Malayalam, Marathi, Gujarati, Punjabi, Odia, English)
+
+**Voice Options (TTS)**:
+- Female: anushka (default), manisha, vidya, arya
+- Male: abhilash, karun, hitesh, shubh
+
+**Audio Formats Supported**:
+- Input: WAV, MP3, OGG, FLAC, AAC, AMR, WebM, PCM
+- Output: WAV, MP3, Linear16, Mulaw, Alaw, Opus, FLAC, AAC
 
 ### 4.3 LLM Orchestration Layer
 
@@ -711,7 +712,7 @@ User's last answer: {user_answer}
 ### 10.1 Unit Testing
 - **Coverage Target**: 90% code coverage
 - **Framework**: pytest for Python
-- **Mock Strategy**: Mock external APIs (Bhashini, WhatsApp, OpenAI)
+- **Mock Strategy**: Mock external APIs (Sarvam AI, WhatsApp, OpenAI)
 - **Test Data**: Synthetic conversation data in multiple languages
 
 ### 10.2 Integration Testing
@@ -797,7 +798,7 @@ Based on the requirements, the following correctness properties must be validate
 
 ### Phase 1: Core Infrastructure (MVP - Hackathon)
 - WhatsApp Business API integration
-- Basic voice processing pipeline with Bhashini
+- Basic voice processing pipeline with Sarvam AI
 - User profile management
 - Single language support (Hindi)
 - Skill discovery flow (5-7 questions)

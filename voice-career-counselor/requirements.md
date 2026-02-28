@@ -130,9 +130,9 @@ A WhatsApp/IVR-based voice AI that acts as a personal career counselor for anyon
 | ID | Requirement | Priority |
 |----|-------------|----------|
 | FR-V1 | System SHALL accept voice notes via WhatsApp Business API | P0 |
-| FR-V2 | System SHALL transcribe voice to text using Bhashini ASR | P0 |
+| FR-V2 | System SHALL transcribe voice to text using Sarvam AI ASR | P0 |
 | FR-V3 | System SHALL support all 22 scheduled Indian languages | P0 |
-| FR-V4 | System SHALL convert text responses to speech using Bhashini TTS | P0 |
+| FR-V4 | System SHALL convert text responses to speech using Sarvam AI TTS | P0 |
 | FR-V5 | System SHALL auto-detect user's language from first message | P0 |
 | FR-V6 | System SHALL maintain language consistency within a session | P0 |
 | FR-V7 | System SHALL support IVR fallback via Twilio | P1 |
@@ -253,7 +253,7 @@ A WhatsApp/IVR-based voice AI that acts as a personal career counselor for anyon
 
 | ID | Requirement | Target |
 |----|-------------|--------|
-| NFR-L1 | 22 language support | Via Bhashini |
+| NFR-L1 | 22 language support | Via Sarvam AI |
 | NFR-L2 | Code-mixing support | Hindi-English, Tamil-English |
 | NFR-L3 | Regional dialect handling | Best effort via ASR |
 | NFR-L4 | Culturally appropriate responses | Reviewed prompts |
@@ -265,8 +265,8 @@ A WhatsApp/IVR-based voice AI that acts as a personal career counselor for anyon
 | ID | Integration | Purpose | Priority |
 |----|-------------|---------|----------|
 | TR-I1 | WhatsApp Business API | Primary messaging channel | P0 |
-| TR-I2 | Bhashini ASR API | Speech-to-text | P0 |
-| TR-I3 | Bhashini TTS API | Text-to-speech | P0 |
+| TR-I2 | Sarvam AI ASR API (Saaras v3) | Speech-to-text | P0 |
+| TR-I3 | Sarvam AI TTS API (Bulbul v3) | Text-to-speech | P0 |
 | TR-I4 | OpenAI/Anthropic API | LLM for conversation | P0 |
 | TR-I5 | Twilio Voice API | IVR fallback | P1 |
 | TR-I6 | Supabase | User database | P0 |
@@ -299,7 +299,7 @@ A WhatsApp/IVR-based voice AI that acts as a personal career counselor for anyon
 
 | Constraint | Impact | Mitigation |
 |------------|--------|------------|
-| Bhashini API rate limits | May throttle at scale | Queue + retry logic |
+| Sarvam AI API rate limits | May throttle at scale | Queue + retry logic |
 | WhatsApp 24-hour window | Can't message after 24h without user initiation | Prompt users to message first |
 | LLM token costs | High at scale | Caching, prompt optimization |
 | Voice note size limit | 16MB on WhatsApp | Not an issue for short voice |
@@ -363,7 +363,7 @@ The following are explicitly NOT in scope for the hackathon MVP:
 
 | Dependency | Risk Level | Contingency |
 |------------|------------|-------------|
-| Bhashini API availability | Low | Use Whisper + gTTS as backup |
+| Sarvam AI API availability | Low | Use Whisper + gTTS as backup |
 | WhatsApp Business API approval | Medium | Use Twilio sandbox for demo |
 | OpenAI/Anthropic API | Low | Have both ready, can switch |
 | Supabase availability | Low | Local PostgreSQL backup |
@@ -376,7 +376,7 @@ The following are explicitly NOT in scope for the hackathon MVP:
 | NPTEL course data | Low | Public data, easy to scrape |
 | Job listings | High | Use static sample data for MVP |
 
-## 10. Supported Languages (Bhashini)
+## 10. Supported Languages (Sarvam AI)
 
 | # | Language | Script |
 |---|----------|--------|
@@ -413,5 +413,5 @@ The following are explicitly NOT in scope for the hackathon MVP:
 | IVR | Interactive Voice Response — phone-based voice menu |
 | NSDC | National Skill Development Corporation |
 | NPTEL | National Programme on Technology Enhanced Learning |
-| Bhashini | Government of India's AI language translation platform |
+| Sarvam AI | India's sovereign AI platform for speech, translation, and text processing |
 | Gig economy | Flexible, on-demand work (delivery, services, etc.) |
