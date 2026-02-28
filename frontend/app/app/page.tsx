@@ -133,30 +133,37 @@ export default function AppPage() {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
+    <div className="h-screen flex flex-col bg-slate-50 relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-300/10 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-violet-300/10 blur-[120px] pointer-events-none" />
+
       {/* Top Bar */}
-      <header className="h-14 border-b bg-white px-4 flex items-center justify-between shrink-0">
+      <header className="h-16 border-b border-white/20 bg-white/60 backdrop-blur-md px-6 flex items-center justify-between shrink-0 z-10 shadow-sm">
         <div className="flex items-center gap-3">
-          <span className="text-xl font-bold text-blue-900">सहज</span>
-          <span className="text-xs text-gray-400">Voice Career Counselor</span>
-          <span className={`w-2 h-2 rounded-full ${connected ? "bg-green-500" : "bg-red-500"}`} />
+          <span className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-violet-700 tracking-tight">सहज</span>
+          <span className="text-sm font-medium text-slate-500">Voice Career Counselor</span>
+          <div className="flex items-center gap-1.5 ml-2 px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200">
+            <span className={`w-2 h-2 rounded-full ${connected ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]" : "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.6)]"}`} />
+            <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">{connected ? "Connected" : "Offline"}</span>
+          </div>
         </div>
         <Select value={language} onValueChange={setLanguage}>
-          <SelectTrigger className="w-48">
+          <SelectTrigger className="w-48 bg-white/80 border-slate-200 shadow-sm rounded-xl">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="rounded-xl border-slate-100 shadow-lg">
             {LANGUAGES.map((l) => (
-              <SelectItem key={l.code} value={l.code}>{l.label}</SelectItem>
+              <SelectItem key={l.code} value={l.code} className="rounded-lg">{l.label}</SelectItem>
             ))}
           </SelectContent>
         </Select>
       </header>
 
       {/* Main Content */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden p-4 gap-4 z-10">
         {/* Left: Chat Panel */}
-        <div className="w-2/5 border-r bg-white flex flex-col">
+        <div className="w-[40%] bg-white/80 backdrop-blur-md flex flex-col rounded-3xl border border-white shadow-xl shadow-slate-200/50 overflow-hidden">
           <ChatPanel
             messages={messages}
             onSendAudio={handleSendAudio}
@@ -167,7 +174,7 @@ export default function AppPage() {
         </div>
 
         {/* Right: Dashboard */}
-        <div className="w-3/5 bg-gray-50 overflow-auto">
+        <div className="w-[60%] bg-white/60 backdrop-blur-md rounded-3xl border border-white shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col">
           <DashboardPanel
             profile={profile}
             courses={courses}

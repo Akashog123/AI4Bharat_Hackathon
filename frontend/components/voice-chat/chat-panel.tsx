@@ -51,19 +51,24 @@ export function ChatPanel({ messages, onSendAudio, onSendText, isProcessing, con
         </div>
       </ScrollArea>
 
-      <div className="p-4 border-t bg-gray-50">
-        <div className="flex items-center gap-2">
+      <div className="p-4 bg-white/50 backdrop-blur-sm border-t border-slate-100">
+        <div className="flex items-center gap-3">
           <MicButton onRecordingComplete={onSendAudio} disabled={!connected || isProcessing} />
 
-          <form onSubmit={handleSendText} className="flex-1 flex gap-2">
+          <form onSubmit={handleSendText} className="flex-1 flex gap-2 relative">
             <Input
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="Or type here..."
+              placeholder="Type your message..."
               disabled={!connected || isProcessing}
-              className="flex-1"
+              className="flex-1 rounded-full bg-slate-100 border-transparent focus-visible:ring-blue-500 focus-visible:bg-white pl-4 pr-12 h-12 shadow-inner"
             />
-            <Button type="submit" size="icon" disabled={!inputText.trim() || !connected || isProcessing}>
+            <Button
+              type="submit"
+              size="icon"
+              disabled={!inputText.trim() || !connected || isProcessing}
+              className="absolute right-1 top-1 h-10 w-10 rounded-full bg-blue-600 hover:bg-blue-700 shadow-md"
+            >
               <Send className="h-4 w-4" />
             </Button>
           </form>
