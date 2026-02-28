@@ -15,24 +15,33 @@ class VoiceWebSocketHandler:
     async def handle(self, websocket: WebSocket):
         await websocket.accept()
 
-        # Get or create user/session from initial handshake
+        user_id_str = None
+        language = "hi-IN"
+
+        # Fix CRITICAL 3 & 4: Don't hold DB connection for entire lifecycle
         async with async_session() as db:
             user_service = UserService(db)
             session_service = SessionService(db)
 
             try:
-                # Wait for init message with user_id or create new
+                # Wait for init message
                 init_data = await websocket.receive_json()
-                user_id = init_data.get("user_id")
+                user_id_str = init_data.get("user_id")
                 language = init_data.get("language", "hi-IN")
+                user = None
 
-                if user_id:
-                    user = await user_service.get_user(UUID(user_id))
-                    if not user:
-                        user = await user_service.create_user(language=language)
-                else:
+                # Fix HIGH 7: Basic UUID validation for IDOR
+                if user_id_str:
+                    try:
+                        valid_uuid = UUID(user_id_str)
+                        user = await user_service.get_user(valid_uuid)
+                    except ValueError:
+                        user = None
+
+                if not user:
                     user = await user_service.create_user(language=language)
 
+                user_id_str = str(user.id)
                 session = await session_service.get_active_session(user.id)
                 if not session:
                     session = await session_service.create_session(user.id)
@@ -61,10 +70,20 @@ class VoiceWebSocketHandler:
             except WebSocketDisconnect:
                 return
 
-            # Main message loop
-            try:
-                while True:
-                    message = await websocket.receive()
+        # Main message loop - gets fresh DB session per message
+        try:
+            while True:
+                message = await websocket.receive()
+
+                async with async_session() as db:
+                    user_service = UserService(db)
+                    session_service = SessionService(db)
+
+                    user = await user_service.get_user(UUID(user_id_str))
+                    session = await session_service.get_active_session(UUID(user_id_str))
+
+                    if not user or not session:
+                        continue # Should not happen
 
                     if "bytes" in message:
                         # Audio data received
@@ -94,8 +113,8 @@ class VoiceWebSocketHandler:
                                 "state": data["state"],
                             })
 
-            except WebSocketDisconnect:
-                pass
+        except WebSocketDisconnect:
+            pass
 
     async def _process_voice(self, audio_bytes, user, session, db, user_service, session_service):
         """Process voice input: ASR -> LLM -> TTS."""
