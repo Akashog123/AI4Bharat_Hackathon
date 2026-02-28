@@ -8,12 +8,6 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
   const isUser = message.role === "user";
   const [isPlaying, setIsPlaying] = useState(false);
 
-  useEffect(() => {
-    if (message.audioUrl && !isUser) {
-      handlePlayAudio();
-    }
-  }, [message.audioUrl]);
-
   const handlePlayAudio = async () => {
     if (message.audioUrl && !isPlaying) {
       setIsPlaying(true);
@@ -29,16 +23,18 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
 
   return (
     <div className={`flex items-start gap-3 max-w-[85%] ${isUser ? "ml-auto flex-row-reverse" : ""}`}>
-      <Avatar className="w-8 h-8 shrink-0">
+      <Avatar className={`w-8 h-8 shrink-0 shadow-sm border border-white ${isUser ? "bg-blue-100" : "bg-indigo-100"}`}>
         <AvatarImage src={isUser ? undefined : "/bot-avatar.png"} />
-        <AvatarFallback>{isUser ? "U" : "S"}</AvatarFallback>
+        <AvatarFallback className={isUser ? "text-blue-700 bg-blue-100 font-medium" : "text-indigo-700 bg-indigo-100 font-medium"}>
+          {isUser ? "U" : "S"}
+        </AvatarFallback>
       </Avatar>
 
       <div
-        className={`rounded-2xl px-4 py-2 text-sm leading-relaxed ${
+        className={`rounded-2xl px-5 py-3 text-[15px] leading-relaxed shadow-sm transition-all hover:shadow-md ${
           isUser
-            ? "bg-blue-600 text-white rounded-tr-sm"
-            : "bg-gray-100 text-gray-800 rounded-tl-sm border"
+            ? "bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-tr-sm"
+            : "bg-white text-slate-800 rounded-tl-sm border border-slate-100"
         }`}
       >
         <p className="whitespace-pre-wrap">{message.content}</p>
