@@ -56,9 +56,11 @@ class SarvamClient:
             )
             response.raise_for_status()
             result = response.json()
-            audio_base64 = result.get("audios", [None])[0]
-            if audio_base64:
-                return base64.b64decode(audio_base64)
+            audios = result.get("audios", [])
+            if audios:
+                audio_base64 = audios[0]
+                if audio_base64:
+                    return base64.b64decode(audio_base64)
             return None
 
     async def translate_text(self, text: str, source_lang: str, target_lang: str) -> str:
