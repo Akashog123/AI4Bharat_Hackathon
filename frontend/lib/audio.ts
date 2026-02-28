@@ -4,7 +4,18 @@ export class AudioRecorder {
   private stream: MediaStream | null = null;
 
   async start(): Promise<void> {
-    this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    try {
+      this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (error: any) {
+      if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+        throw new Error('Microphone permission denied. Please allow microphone access to use voice chat.');
+      }
+      if (error.name === 'NotFoundError') {
+        throw new Error('No microphone found. Please connect a microphone and try again.');
+      }
+      throw error;
+    }
+
     this.mediaRecorder = new MediaRecorder(this.stream, {
       mimeType: "audio/webm;codecs=opus",
     });
@@ -47,11 +58,11 @@ export class AudioRecorder {
   }
 }
 
-export function playAudioBase64(base64Audio: string): Promise<void> {
-  return new Promise((resolve, reject) => {
+export async function playAudioBase64(base64Audio: string): Promise<void> {
+  return new Promise(async (resolve, reject) => {
     try {
-      const audioBytes = Uint8Array.from(atob(base64Audio), (c) => c.charCodeAt(0));
-      const blob = new Blob([audioBytes], { type: "audio/wav" });
+      const res = await fetch(`data:audio/wav;base64,${base64Audio}`);
+      const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
       audio.onended = () => {
