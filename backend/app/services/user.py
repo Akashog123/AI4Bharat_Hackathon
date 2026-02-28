@@ -22,8 +22,16 @@ class UserService:
         user = await self.get_user(user_id)
         if not user:
             raise ValueError(f"User {user_id} not found")
+
+        # Fix HIGH 6: Mass assignment vulnerability
+        ALLOWED_FIELDS = {
+            "education_level", "education_stream", "skills", "work_experience",
+            "location", "location_preference", "job_type_preference",
+            "preferred_language", "profile_complete", "discovery_step", "name"
+        }
+
         for key, value in updates.items():
-            if hasattr(user, key):
+            if key in ALLOWED_FIELDS and hasattr(user, key):
                 setattr(user, key, value)
         await self.db.commit()
         await self.db.refresh(user)
