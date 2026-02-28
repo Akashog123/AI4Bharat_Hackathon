@@ -67,3 +67,27 @@ async def get_session_history(user_id: UUID, db: AsyncSession = Depends(get_db))
         "state": session.current_state,
         "messages": session.messages or [],
     }
+
+from app.services.resume import ResumeService
+
+@router.post("/resume/generate/{user_id}")
+async def generate_resume(user_id: UUID, resume_data: dict, db: AsyncSession = Depends(get_db)):
+    user_service = UserService(db)
+    user = await user_service.get_user(user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    resume_service = ResumeService(db)
+    pdf_bytes = resume_service.generate_pdf(resume_data)
+    resume = await resume_service.save_resume(user_id, resume_data, pdf_bytes)
+    return {"resume_id": str(resume.id), "download_url": f"/api/resume/download/{resume.id}"}
+
+@router.get("/resume/download/{resume_id}")
+async def download_resume(resume_id: UUID, db: AsyncSession = Depends(get_db)):
+    from sqlalchemy import select
+    from app.db.models import Resume
+    result = await db.execute(select(Resume).where(Resume.id == resume_id))
+    resume = result.scalar_one_or_none()
+    if not resume or not resume.local_path:
+        raise HTTPException(status_code=404, detail="Resume not found")
+    return FileResponse(resume.local_path, media_type="application/pdf", filename="sahaj_resume.pdf")
