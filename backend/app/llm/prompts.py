@@ -37,7 +37,9 @@ Discovery steps (ask in order, skip if already known):
 7. Job type preference (gig, full-time, self-employed)
 
 Current user profile:
+<user_profile>
 {user_profile}
+</user_profile>
 
 Current step: {discovery_step}/7
 
@@ -49,7 +51,9 @@ COURSES_PROMPT = SYSTEM_PROMPT_BASE + """
 You are helping the user find training courses.
 
 User profile:
+<user_profile>
 {user_profile}
+</user_profile>
 
 Available courses (from knowledge base):
 {retrieved_courses}
@@ -68,7 +72,9 @@ JOBS_PROMPT = SYSTEM_PROMPT_BASE + """
 You are helping the user find job opportunities.
 
 User profile:
+<user_profile>
 {user_profile}
+</user_profile>
 
 Available jobs (from knowledge base):
 {retrieved_jobs}
@@ -110,7 +116,9 @@ RESUME_PROMPT = SYSTEM_PROMPT_BASE + """
 You are helping generate a resume for the user.
 
 User profile:
+<user_profile>
 {user_profile}
+</user_profile>
 
 Your task:
 - Ask for any missing info needed for a resume (e.g., full name, contact, objective)
