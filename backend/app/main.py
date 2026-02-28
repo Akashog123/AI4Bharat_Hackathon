@@ -4,6 +4,7 @@ from app.config import settings
 from contextlib import asynccontextmanager
 from app.db.database import init_db
 from app.api.websocket import voice_handler
+from app.api.routes import router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -11,6 +12,7 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(title=settings.app_name, lifespan=lifespan)
+app.include_router(router)
 
 app.add_middleware(
     CORSMiddleware,
