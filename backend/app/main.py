@@ -1,8 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from contextlib import asynccontextmanager
 from app.db.database import init_db
+from app.api.websocket import voice_handler
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -18,6 +19,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.websocket("/ws/voice")
+async def voice_ws(websocket: WebSocket):
+    await voice_handler.handle(websocket)
 
 @app.get("/api/health")
 async def health():
