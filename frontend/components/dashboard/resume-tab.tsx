@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Button } from "@/components/ui/button";
 import { FileText, Download, Loader2, Sparkles, AlertCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { calculateProfileCompletion } from "@/lib/utils";
 
 export function ResumeTab({ profile }: { profile: UserProfile }) {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -12,6 +13,7 @@ export function ResumeTab({ profile }: { profile: UserProfile }) {
 
   const isProfileCompleteEnough = profile.name && profile.skills?.length > 0 && profile.education_level;
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const progress = calculateProfileCompletion(profile);
 
   const handleGenerateResume = async () => {
     setIsGenerating(true);
@@ -89,9 +91,9 @@ export function ResumeTab({ profile }: { profile: UserProfile }) {
             <div className="w-full mt-4 space-y-1">
               <div className="flex justify-between text-xs text-red-700 font-medium px-1">
                 <span>Profile Completion</span>
-                <span>{Math.round((Object.values(profile).filter(Boolean).length / Object.keys(profile).length) * 100)}%</span>
+                <span>{progress}%</span>
               </div>
-              <Progress value={(Object.values(profile).filter(Boolean).length / Object.keys(profile).length) * 100} className="h-1.5 bg-red-100" />
+              <Progress value={progress} className="h-1.5 bg-red-100" />
             </div>
           </CardContent>
         </Card>
